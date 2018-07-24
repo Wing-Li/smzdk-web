@@ -1,4 +1,4 @@
-package com.lyl.smzdk.dao;
+package com.lyl.smzdk.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

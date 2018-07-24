@@ -1,7 +1,7 @@
 package com.lyl.smzdk.controller.api;
 
-import com.lyl.smzdk.dao.User;
-import com.lyl.smzdk.dao.UserRepository;
+import com.lyl.smzdk.model.User;
+import com.lyl.smzdk.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @EnableAutoConfiguration
 @RestController
-public class HelloController extends ApiBaseController {
+public class UserController extends ApiBaseController {
 
     @RequestMapping("/hello")
     public String index() {

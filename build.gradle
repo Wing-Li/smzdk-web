@@ -28,10 +28,10 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile('org.springframework.boot:spring-boot-starter-web')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile("com.h2database:h2")
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile "com.h2database:h2"
 }
 
 compileKotlin {
