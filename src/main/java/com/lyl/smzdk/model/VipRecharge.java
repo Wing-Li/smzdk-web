@@ -1,9 +1,6 @@
 package com.lyl.smzdk.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 /**
@@ -13,20 +10,23 @@ import java.sql.Date;
 public class VipRecharge {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(unique = true)
-    private int user_id;
+    private Integer user_id;
     @Column(nullable = false)
-    private int money;
-    private int vip_grade = 1;
-    private int duration = 30;
-    private int from = 0;
+    private Integer money;
+    private Integer vip_grade = 1;
+    private Integer duration = 30;
+    private Integer from = 0;
     private Date create_time = new Date(System.currentTimeMillis());
 
     public Long getId() {
         return id;
+    }
+
+    public VipRecharge(){
     }
 
     public VipRecharge(int user_id, int money, int vip_grade, int duration, int from, Date create_time) {

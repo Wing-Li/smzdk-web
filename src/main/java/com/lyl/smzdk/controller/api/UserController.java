@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,12 +40,14 @@ public class UserController extends ApiBaseController {
      * @param city
      */
     @RequestMapping("/createUser")
-    public void createUser(String number, String name, String icon, String signature, int sex, String birth, String phone, String email, String province, String city) {
+    public void createUser(String number, String name, String icon, String signature, Integer sex, String birth, String phone, String email, String province, String city) {
         User user = new User();
 
-        Date now_time = new Date(System.currentTimeMillis());
-        user.setCreate_time(now_time);
-        user.setUpdate_time(now_time);
+        user.setName(name);
+        user.setSex(sex);
+        Date timestamp = new Date(System.currentTimeMillis());
+        user.setCreate_time(timestamp);
+        user.setUpdate_time(timestamp);
 
         userRepository.save(user);
     }

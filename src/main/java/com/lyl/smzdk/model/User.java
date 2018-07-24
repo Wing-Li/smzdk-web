@@ -1,11 +1,8 @@
 package com.lyl.smzdk.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * 用户信息表
@@ -16,25 +13,25 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(unique = true)
     private String number;
     @Column(unique = true, nullable = false)
-    private String name;
+    private String name; // 用户名
     private String icon;
     private String signature;
     @Column(nullable = false)
-    private int sex = 0;
+    private Integer sex = 0; // 性别
     private String birth;
     @Column(length = 11)
     private String phone;
     private String email;
     private String province;
     private String city;
-    private int vip_grade = 0;
-    private long integral = 0;
+    private Integer vip_grade = 0;
+    private Long integral = 0L;
     private Date create_time = new Date(System.currentTimeMillis());
     private Date update_time = new Date(System.currentTimeMillis());
 
