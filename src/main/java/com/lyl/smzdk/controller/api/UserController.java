@@ -38,7 +38,7 @@ public class UserController extends ApiBaseController {
      * @param province
      * @param city
      */
-    @RequestMapping("/saveUser")
+    @RequestMapping("/createUser")
     public void createUser(String number, String name, String icon, String signature, int sex, String birth, String phone, String email, String province, String city) {
         User user = new User();
 
@@ -61,8 +61,8 @@ public class UserController extends ApiBaseController {
      * 获取用户信息
      */
     @RequestMapping("/getUser")
-    public User getUser(String name) {
-        return userRepository.findByUserName(name);
+    public User getUser(Long user_id) {
+        return userRepository.findById(user_id).get();
     }
 
 
