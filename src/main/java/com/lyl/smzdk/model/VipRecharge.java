@@ -29,6 +29,15 @@ public class VipRecharge {
         return id;
     }
 
+    public VipRecharge(int user_id, int money, int vip_grade, int duration, int from, Date create_time) {
+        this.user_id = user_id;
+        this.money = money;
+        this.vip_grade = vip_grade;
+        this.duration = duration;
+        this.from = from;
+        this.create_time = create_time;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
