@@ -18,6 +18,7 @@ public class User implements Serializable {
 
     @Column(unique = true)
     private String number;
+    private String password;
     @Column(unique = true, nullable = false)
     private String name; // 用户名
     private String icon;
@@ -42,21 +43,24 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String number, String name, String icon, String signature, int sex, String birth, String phone, String email, String province, String city, int vip_grade, long integral, Date create_time, Date update_time) {
-        this.number = number;
-        this.name = name;
-        this.icon = icon;
-        this.signature = signature;
+    public void setSex(Integer sex) {
         this.sex = sex;
-        this.birth = birth;
-        this.phone = phone;
-        this.email = email;
-        this.province = province;
-        this.city = city;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setVip_grade(Integer vip_grade) {
         this.vip_grade = vip_grade;
+    }
+
+    public void setIntegral(Long integral) {
         this.integral = integral;
-        this.create_time = create_time;
-        this.update_time = update_time;
     }
 
     public Long getId() {

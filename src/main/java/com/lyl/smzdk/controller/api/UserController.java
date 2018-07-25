@@ -1,13 +1,14 @@
 package com.lyl.smzdk.controller.api;
 
+import com.lyl.smzdk.model.BaseCallBack;
 import com.lyl.smzdk.model.User;
 import com.lyl.smzdk.repository.UserRepository;
+import com.lyl.smzdk.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -27,29 +28,73 @@ public class UserController extends ApiBaseController {
 
     /**
      * 创建用户
-     *
-     * @param number
-     * @param name
-     * @param icon
-     * @param signature
-     * @param sex
-     * @param birth
-     * @param phone
-     * @param email
-     * @param province
-     * @param city
      */
     @RequestMapping("/createUser")
-    public void createUser(String number, String name, String icon, String signature, Integer sex, String birth, String phone, String email, String province, String city) {
-        User user = new User();
+    public BaseCallBack createUser(String number, String password, String name, Integer sex) {
 
+        if (number.length() > 32){
+            return failCallBack(10001, "用户名不能超过32个字符");
+        }
+
+        User user = new User();
+        user.setNumber(number);
+        user.setPassword(password);
         user.setName(name);
         user.setSex(sex);
         Date timestamp = new Date(System.currentTimeMillis());
         user.setCreate_time(timestamp);
         user.setUpdate_time(timestamp);
 
+        User save = userRepository.save(user);
+
+        return successCallBack(save);
+    }
+
+    /**
+     * 更新数据库字段，只要某个字段传了值，就更新数据库
+     */
+    @RequestMapping("/updateUser")
+    public BaseCallBack updateUser(Long user_id, String number, String name, String icon, String signature, Integer sex, String birth, String phone, String email, String province, String city) {
+        BaseCallBack callBack;
+        User user = userRepository.findById(user_id).get();
+
+        if (!MyUtils.isEmpty(number)){
+            user.setNumber(number);
+        }
+        if (!MyUtils.isEmpty(name)){
+            user.setName(name);
+        }
+        if (!MyUtils.isEmpty(icon)){
+            user.setIcon(icon);
+        }
+        if (!MyUtils.isEmpty(signature)){
+            user.setSignature(signature);
+        }
+        if (sex == 1){
+            user.setSex(sex);
+        }
+        if (!MyUtils.isEmpty(birth)){
+            user.setBirth(birth);
+        }
+        if (!MyUtils.isEmpty(phone)){
+            user.setPhone(phone);
+        }
+        if (!MyUtils.isEmpty(email)){
+            user.setEmail(email);
+        }
+        if (!MyUtils.isEmpty(province)){
+            user.setProvince(province);
+        }
+        if (!MyUtils.isEmpty(city)){
+            user.setCity(city);
+        }
+
+        Date timestamp = new Date(System.currentTimeMillis());
+        user.setUpdate_time(timestamp);
+
         userRepository.save(user);
+
+        return successCallBack(user);
     }
 
     /**

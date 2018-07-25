@@ -1,7 +1,5 @@
 package com.lyl.smzdk.utils;
 
-import org.apache.tomcat.util.codec.binary.Base64;
-
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -22,60 +20,48 @@ import java.security.SecureRandom;
 public class DESHelper {
 
     private final static String DES = "DES";
-    private final static String KEY = "hellolsj";
-
-    public DESHelper() {
-    }
+    private final static String KEY = "xOsmaiJv";
 
     public static String encrypt(String pliantext) throws Exception {
         return encodeBase64(encryptDES(pliantext, KEY));
     }
 
-    public static String encrypt(String pliantext, String key) throws Exception {
-        return encodeBase64(encryptDES(pliantext, key));
-    }
-
     public static String decrypt(String ciphertext) throws Exception {
-        return decryptDES(decodeBase64(ciphertext.getBytes()), KEY);
-    }
-
-    public static String decrypt(String ciphertext, String key) throws Exception {
-        return decryptDES(decodeBase64(ciphertext.getBytes()), key);
+        return decryptDES(decodeBase64(ciphertext), KEY);
     }
 
     /**
-     * base64编码
-     *
-     * @param binaryData
-     * @return
-     * @throws Exception
+     * 编码
      */
-    private static String encodeBase64(byte[] binaryData) throws Exception {
-        try {
-            return Base64.encodeBase64String(binaryData);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("BASE64编码失败!");
+    private static String encodeBase64(byte[] binaryData) {
+        StringBuilder hexString = new StringBuilder();
+        for (int i = 0; i < binaryData.length; i++) {
+            String plainText = Integer.toHexString(0xff & binaryData[i]);
+            if (plainText.length() < 2) plainText = "0" + plainText;
+            hexString.append(plainText);
         }
+
+        return hexString.toString();
     }
 
     /**
-     * Base64解码
-     *
-     * @param binaryData
-     * @return
+     * 解码
      */
-    private static byte[] decodeBase64(byte[] binaryData) {
-        try {
-            return Base64.decodeBase64(binaryData);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("BASE64解码失败！");
+    private static byte[] decodeBase64(String binaryData) {
+        byte digest[] = new byte[binaryData.length() / 2];
+        for (int i = 0; i < digest.length; i++) {
+            String byteString = binaryData.substring(2 * i, 2 * i + 2);
+            int byteValue = Integer.parseInt(byteString, 16);
+            digest[i] = (byte) byteValue;
         }
+
+        return digest;
     }
 
-    public static byte[] encryptDES(String data, String key) {
-
+    /**
+     * DES 加密
+     */
+    private static byte[] encryptDES(String data, String key) {
         try {
             // 生成一个可信任的随机数源 ,  SHA1PRNG: 仅指定算法名称
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
@@ -99,7 +85,10 @@ public class DESHelper {
         return null;
     }
 
-    public static String decryptDES(byte[] data, String key) {
+    /**
+     * DES 解密
+     */
+    private static String decryptDES(byte[] data, String key) {
         try {
             // 算法要求有一个可信任的随机数源,  SHA1PRNG: 仅指定算法名称
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
@@ -123,11 +112,20 @@ public class DESHelper {
     }
 
 //    public static void main(String[] args) throws Exception {
-//        String enString = encrypt("{\"pageEntity\":{\"pageSize\":\"20\",\"pageIndex\":\"0\"},\"instance\":{\"status\":\"7\"}}");
+//        long s = System.currentTimeMillis();
+//        String v = "// 算法要求有一个可信任的随机数源,  SHA1PRNG: 仅指定算法名称\n" +
+//                "            SecureRandom random = SecureRandom.getInstance(\"SHA1PRNG\");\n" +
+//                "            // 创建一个DESKeySpec对象\n" +
+//                "            DESKeySpec desKeySpec = new DESKeySpec(key.getBytes(\"UTF-8\"));\n" +
+//                "            // 创建一个密匙工厂\n" +
+//                "            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(DES);";
+//
+//        String enString = encrypt(v);
 //        System.out.println("加密后的字串是：" + enString);
-//        String deString = decrypt("\"qOstyn2mAByzhtC/mR20VT9C2zLEuR+Ft+SsRgK9dqtVwpKRq5invMaqrW2NFK/8qzMcGpcCD5FXFLMtpPDmMU7mDeQNDpmV1xso8ezHdxuCaZdpR8vBAVfByh5DK+MtQPayu129s/fNbpW2oqc2+t4dPTGAAZIqWhaBcvPhbL6ywvk4uY+SSyhMV/gGuF4W8xkmbMVUyF0ugpsCcUFHSEHd7qs1LGIA5hm0qJ2fLnAQiShWUavwyVfByh5DK+MtQPayu129s/fNbpW2oqc2+pb1BZnZopFnWhaBcvPhbL4n5ZdRF4kWoDjaWAeXZscf8xkmbMVUyF0JJVwtkwio4NBJqR0cc5Au5hm0qJ2fLnCL6qBK3Qo2XDXSA8uMqjTsqwf0we6jtsXqcLDKCJWs+EhUOM81j6+Y41ZXmlr4gKxdRP9/f41C09wfoqQSdC9c7yZrF33vdlmN2wSq1zwL72mizlHyCKSJ9vKcNKpIBWNm4dyWkPzWWAt3eU73L5gsjrgFWcTNA25c18xW3w13Nw==\"");
+//        String deString = decrypt(enString);
 //        System.out.println("解密后的字串是：" + deString);
+//
+//        System.out.println("shijian：" + (System.currentTimeMillis() - s));
 //    }
-
 
 }

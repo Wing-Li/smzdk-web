@@ -1,5 +1,6 @@
 package com.lyl.smzdk.controller.api;
 
+import com.lyl.smzdk.model.BaseCallBack;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -7,4 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @RequestMapping("/api")
 public class ApiBaseController {
+
+    /**
+     * 请求数据成功
+     */
+    BaseCallBack successCallBack(Object t){
+        return new BaseCallBack(200, "请求成功", t);
+    }
+
+    BaseCallBack failCallBack(int code, String msg){
+        return new BaseCallBack(code, msg, "");
+    }
+
+
 }

@@ -31,13 +31,6 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-//        if (methodParameter.getContainingClass().isAnnotationPresent(SecurityParameter.class)) {
-//            //获取注解配置的包含和去除字段
-//            SecurityParameter serializedField = methodParameter.getMethodAnnotation(SecurityParameter.class);
-//            //出参是否需要加密
-//            encode = serializedField.outEncode();
-//        }
-
         // 对所有的 api 数据都加密
         ObjectMapper objectMapper = new ObjectMapper();
         try {
