@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lyl.smzdk.utils.DESHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -19,8 +21,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @desc 返回数据加密
  * @date 2018/3/2 11:12
  */
-@ControllerAdvice(basePackages = "com.lyl.smzdk.controller")
+// classpath:config/my.properties指的是src/main/resources目录下config目录下的my.properties文件
+@PropertySource({"classpath:application.properties"})
+//@ControllerAdvice(basePackages = "com.lyl.smzdk.controller")
 public class MyResponseBodyAdvice implements ResponseBodyAdvice {
+
+    @Value("${spring.profiles.active}")
+    private String active;
 
     private final static Logger logger = LoggerFactory.getLogger(MyResponseBodyAdvice.class);
 
@@ -31,14 +38,16 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        // 对所有的 api 数据都加密
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
-            return DESHelper.encrypt(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("对方法method :【" + methodParameter.getMethod().getName() + "】返回数据进行解密出现异常：" + e.getMessage());
+        // dev 环境不加密
+        if (!"dev".equals(active)) {
+            // 对所有的 api 数据都加密
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                String result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
+                return DESHelper.encrypt(result);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return body;
     }
