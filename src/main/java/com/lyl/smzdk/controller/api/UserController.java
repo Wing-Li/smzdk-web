@@ -27,7 +27,7 @@ public class UserController extends ApiBaseController {
      * 创建用户
      */
     @RequestMapping(path = "/createUser", method = RequestMethod.POST)
-    public BaseCallBack createUser(@RequestParam String number, @RequestParam String password, @RequestParam String name, @RequestParam Integer sex) {
+    public BaseCallBack createUser(@RequestParam String number, @RequestParam String password, @RequestParam String name, Integer sex) {
         // 检查 用户名、密码、昵称、性别 是否符合规范
         if (MyUtils.isEmpty(number) || number.length() > 32 || number.length() < 2) {
             return failCallBack(StatusCode.USER_NAME_10001, StatusCode.USER_NAME_10001_TEXT);
@@ -38,8 +38,10 @@ public class UserController extends ApiBaseController {
         if (MyUtils.isEmpty(name) || name.length() > 16) {
             return failCallBack(StatusCode.USER_NAME_10003, StatusCode.USER_NAME_10003_TEXT);
         }
-        if (sex != 0) {
+        if (sex != null && sex != 0) {
             sex = 1;
+        } else {
+            sex = 0;
         }
 
         // 用户名 和 昵称 都不能重复
@@ -73,16 +75,18 @@ public class UserController extends ApiBaseController {
     /**
      * 更新数据库字段，只要某个字段传了值，就更新数据库
      */
-    @PostMapping("/updateUser")
-    public BaseCallBack updateUser(Long user_id, String number, String name, String icon, String signature, Integer sex, String birth, String phone, String email, String province, String city) {
+    @RequestMapping(path = "/updateUser", method = RequestMethod.POST)
+    public BaseCallBack updateUser(Long user_id, String name, String icon, String signature, Integer sex, String birth, String phone, String email, String province, String city) {
         BaseCallBack callBack;
         User user = userRepository.findById(user_id).get();
 
-        if (!MyUtils.isEmpty(number)) {
-            user.setNumber(number);
-        }
         if (!MyUtils.isEmpty(name)) {
-            user.setName(name);
+            int byName = userRepository.countByName(name);
+            if (byName > 0) {
+                return failCallBack(StatusCode.USER_NAME_10005, StatusCode.USER_NAME_10005_TEXT);
+            } else {
+                user.setName(name);
+            }
         }
         if (!MyUtils.isEmpty(icon)) {
             user.setIcon(icon);
@@ -90,7 +94,7 @@ public class UserController extends ApiBaseController {
         if (!MyUtils.isEmpty(signature)) {
             user.setSignature(signature);
         }
-        if (sex == 1) {
+        if (sex != null) {
             user.setSex(sex);
         }
         if (!MyUtils.isEmpty(birth)) {
@@ -124,7 +128,7 @@ public class UserController extends ApiBaseController {
      * @param password  密码
      * @return 用户信息
      */
-    @PostMapping("/login")
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
     public BaseCallBack login(String user_name, String password) {
         if (!MyUtils.isEmpty(user_name) && !MyUtils.isEmpty(password)) {
             User user = userRepository.findByNumberOrPhone(user_name, user_name);
@@ -157,7 +161,6 @@ public class UserController extends ApiBaseController {
     public User getUser(Long user_id) {
         return userRepository.findById(user_id).get();
     }
-
 
     /**
      * 给用户添加积分

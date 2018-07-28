@@ -16,21 +16,22 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String number;
-    private String password;
+    @Column(nullable = false)
+    private String password = "";
     @Column(unique = true, nullable = false)
     private String name; // 用户名
-    private String icon;
-    private String signature;
+    private String icon = "";
+    private String signature = "";
     @Column(nullable = false)
     private Integer sex = 0; // 性别
-    private String birth;
+    private String birth = "";
     @Column(length = 11)
-    private String phone;
-    private String email;
-    private String province;
-    private String city;
+    private String phone = "";
+    private String email = "";
+    private String province = "";
+    private String city = "";
     private Integer vip_grade = 0;
     private Long integral = 0L;
     private Date create_time = new Date(System.currentTimeMillis());
