@@ -12,11 +12,18 @@ public class ApiBaseController {
     /**
      * 请求数据成功
      */
-    BaseCallBack successCallBack(Object t){
+    BaseCallBack successCallBack(Object t) {
         return new BaseCallBack(200, "请求成功", t);
     }
 
-    BaseCallBack failCallBack(int code, String msg){
+    /**
+     * 请求失败时返回的数据
+     *
+     * @param code 失败 code
+     * @param msg  失败信息
+     * @return
+     */
+    BaseCallBack failCallBack(int code, String msg) {
         return new BaseCallBack(code, msg, "");
     }
 

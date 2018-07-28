@@ -26,7 +26,7 @@ public class UserController extends ApiBaseController {
     /**
      * 创建用户
      */
-    @RequestMapping(path = "/createUser", method = RequestMethod.GET)
+    @RequestMapping(path = "/createUser", method = RequestMethod.POST)
     public BaseCallBack createUser(@RequestParam String number, @RequestParam String password, @RequestParam String name, @RequestParam Integer sex) {
         // 检查 用户名、密码、昵称、性别 是否符合规范
         if (MyUtils.isEmpty(number) || number.length() > 32 || number.length() < 2) {
@@ -42,23 +42,32 @@ public class UserController extends ApiBaseController {
             sex = 1;
         }
 
+        // 用户名 和 昵称 都不能重复
         int byNumber = userRepository.countByNumber(number);
         if (byNumber > 0) {
             return failCallBack(StatusCode.USER_NAME_10004, StatusCode.USER_NAME_10004_TEXT);
         }
+        int byName = userRepository.countByName(name);
+        if (byName > 0) {
+            return failCallBack(StatusCode.USER_NAME_10005, StatusCode.USER_NAME_10005_TEXT);
+        }
 
-        User user = new User();
-        user.setNumber(number);
-        user.setPassword(password);
-        user.setName(name);
-        user.setSex(sex);
-        Date timestamp = new Date(System.currentTimeMillis());
-        user.setCreate_time(timestamp);
-        user.setUpdate_time(timestamp);
+        try {
+            User user = new User();
+            user.setNumber(number);
+            user.setPassword(password);
+            user.setName(name);
+            user.setSex(sex);
+            Date timestamp = new Date(System.currentTimeMillis());
+            user.setCreate_time(timestamp);
+            user.setUpdate_time(timestamp);
 
-        User save = userRepository.save(user);
+            User save = userRepository.save(user);
 
-        return successCallBack(save);
+            return successCallBack(save);
+        } catch (Exception e) {
+            return failCallBack(StatusCode.USER_NAME_10000, StatusCode.USER_NAME_10000_TEXT);
+        }
     }
 
     /**
