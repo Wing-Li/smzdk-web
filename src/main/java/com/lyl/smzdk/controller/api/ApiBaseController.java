@@ -12,8 +12,8 @@ public class ApiBaseController {
     /**
      * 请求数据成功
      */
-    BaseCallBack successCallBack(Object t) {
-        return new BaseCallBack(200, "请求成功", t);
+    BaseCallBack<Object> successCallBack(Object t) {
+        return new BaseCallBack<>(200, "请求成功", t);
     }
 
     /**
@@ -23,8 +23,8 @@ public class ApiBaseController {
      * @param msg  失败信息
      * @return
      */
-    BaseCallBack failCallBack(int code, String msg) {
-        return new BaseCallBack(code, msg, "");
+    BaseCallBack<Object> failCallBack(int code, String msg) {
+        return new BaseCallBack<>(code, msg, "");
     }
 
 
