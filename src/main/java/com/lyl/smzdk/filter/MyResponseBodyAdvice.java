@@ -23,7 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  */
 // classpath:config/my.properties指的是src/main/resources目录下config目录下的my.properties文件
 @PropertySource({"classpath:application.properties"})
-//@ControllerAdvice(basePackages = "com.lyl.smzdk.controller")
+@ControllerAdvice(basePackages = "com.lyl.smzdk.controller")
 public class MyResponseBodyAdvice implements ResponseBodyAdvice {
 
     @Value("${spring.profiles.active}")

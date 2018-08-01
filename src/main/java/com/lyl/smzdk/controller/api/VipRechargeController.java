@@ -9,15 +9,15 @@ import com.lyl.smzdk.repository.VipRechargeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-
+import java.util.Optional;
 
 /**
  * 会员充值记录
  */
-@Controller
+@RestController
 public class VipRechargeController extends ApiBaseController {
 
     private final VipRechargeRepository vipRechargeRepository;
@@ -39,11 +39,10 @@ public class VipRechargeController extends ApiBaseController {
      * @param from      充值来源
      * @return
      */
-    @RequestMapping("/addVipRecharge")
-    public BaseCallBack addVipRecharge(Long user_id, Double money, int vip_grade, int duration, int from) {
-
-        boolean user = userRepository.findById(user_id).isPresent();
-        if (user) {
+    @PostMapping("/addVipRecharge")
+    public BaseCallBack addVipRecharge(Long user_id, Double money, Integer vip_grade, Integer duration, Integer from) {
+        Optional<User> user = userRepository.findById(user_id);
+        if (!user.isPresent()) {
             // 用户不存在
             return failCallBack(StatusCode.USER_NAME_15001, StatusCode.USER_NAME_15001_TEXT);
         }
@@ -61,6 +60,10 @@ public class VipRechargeController extends ApiBaseController {
         int time = duration * 30;
         VipRecharge vipRecharge = new VipRecharge(user_id, money, vip_grade, time, from);
         VipRecharge save = vipRechargeRepository.save(vipRecharge);
+
+        User userTable = user.get();
+        userTable.setVip_grade(vip_grade);
+        userRepository.save(userTable);
 
         return successCallBack(save);
     }

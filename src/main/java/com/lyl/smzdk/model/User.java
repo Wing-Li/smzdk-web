@@ -39,6 +39,7 @@ public class User implements Serializable {
     private String city = "";
     private Integer vip_grade = 0;
     private Long integral = 0L;
+    private Integer close_days = 0;
     @CreatedDate
     private Date create_time;
     @UpdateTimestamp
@@ -51,24 +52,12 @@ public class User implements Serializable {
     public User() {
     }
 
-    public void setSex(Integer sex) {
-        this.sex = sex;
+    public Integer getClose_days() {
+        return close_days;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setVip_grade(Integer vip_grade) {
-        this.vip_grade = vip_grade;
-    }
-
-    public void setIntegral(Long integral) {
-        this.integral = integral;
+    public void setClose_days(Integer close_days) {
+        this.close_days = close_days;
     }
 
     public Long getId() {
@@ -85,6 +74,14 @@ public class User implements Serializable {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -111,11 +108,11 @@ public class User implements Serializable {
         this.signature = signature;
     }
 
-    public int getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(int sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -159,19 +156,19 @@ public class User implements Serializable {
         this.city = city;
     }
 
-    public int getVip_grade() {
+    public Integer getVip_grade() {
         return vip_grade;
     }
 
-    public void setVip_grade(int vip_grade) {
+    public void setVip_grade(Integer vip_grade) {
         this.vip_grade = vip_grade;
     }
 
-    public long getIntegral() {
+    public Long getIntegral() {
         return integral;
     }
 
-    public void setIntegral(long integral) {
+    public void setIntegral(Long integral) {
         this.integral = integral;
     }
 

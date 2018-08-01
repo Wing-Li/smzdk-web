@@ -28,6 +28,8 @@ public class StatusCode {
     // 修改密码 12
 
     // 查询用户 13
+    public final static int USER_NAME_13001 = 11001;
+    public final static String USER_NAME_13001_TEXT = "您的账户被限制登录(天)：";
 
     // 查询用户列表 14
 

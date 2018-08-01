@@ -82,7 +82,7 @@ public class UserController extends ApiBaseController {
     /**
      * 更新数据库字段，只要某个字段传了值，就更新数据库
      */
-    @RequestMapping( value = "/updateUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     public BaseCallBack updateUser(Long user_id, String name, String icon, String signature, Integer sex, String birth, String phone, String email, String province, String city) {
         User user = userRepository.findById(user_id).get();
 
@@ -136,9 +136,14 @@ public class UserController extends ApiBaseController {
         if (!MyUtils.isEmpty(user_name) && !MyUtils.isEmpty(password)) {
             User user = userRepository.findByNumberOrPhone(user_name, user_name);
             if (user != null) {
-                if (password.equals(user.getPassword())) {
+                if (user.getClose_days() > 0) {
+                    // 账号被封
+                    return failCallBack(StatusCode.USER_NAME_13001, StatusCode.USER_NAME_13001_TEXT + user.getClose_days());
+                } else if (password.equals(user.getPassword())) {
+                    // 登录成功
                     return successCallBack(user);
                 } else {
+                    // 密码不对
                     return failCallBack(StatusCode.USER_NAME_11002, StatusCode.USER_NAME_11002_TEXT);
                 }
             } else {
@@ -162,8 +167,15 @@ public class UserController extends ApiBaseController {
     @PostMapping("/getUser")
     public BaseCallBack getUser(Long user_id) {
         Optional<User> user = userRepository.findById(user_id);
-        if (user.isPresent()){
-            return successCallBack(user.get());
+        if (user.isPresent()) {
+            User userTable = user.get();
+            if (userTable.getClose_days() > 0) {
+                // 账号被封
+                return failCallBack(StatusCode.USER_NAME_13001, StatusCode.USER_NAME_13001_TEXT + userTable.getClose_days());
+            } else {
+                // 获取成功
+                return successCallBack(user.get());
+            }
         } else {
             return failCallBack(StatusCode.USER_NAME_11001, StatusCode.USER_NAME_11001_TEXT);
         }
@@ -177,15 +189,5 @@ public class UserController extends ApiBaseController {
         user.setIntegral(user.getIntegral() + integral);
         userRepository.save(user);
     }
-
-    /**
-     * 给用户设置 VIP
-     */
-    public void addUserVip(long user_id, int vip_grade) {
-        User user = userRepository.findById(user_id).get();
-        user.setVip_grade(vip_grade);
-        userRepository.save(user);
-    }
-
 }
 

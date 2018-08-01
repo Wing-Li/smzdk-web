@@ -16,6 +16,7 @@ public class BtSearch {
 
     @Column(unique = true)
     private Long user_id;
+    private String uuid;
     private String content;
     @CreatedDate
     private Date create_time;
@@ -26,6 +27,14 @@ public class BtSearch {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public Long getUser_id() {
