@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -20,14 +21,24 @@ import java.util.List;
 @RestController
 public class UserController extends ApiBaseController {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     /**
      * 创建用户
+     *
+     * @param number   账户名
+     * @param password 密码
+     * @param name     昵称
+     * @param sex      性别
+     * @return 返回用户信息
      */
-    @RequestMapping(path = "/createUser", method = RequestMethod.POST)
-    public BaseCallBack createUser(@RequestParam String number, @RequestParam String password, @RequestParam String name, Integer sex) {
+    @RequestMapping(value = "/createUser", method = RequestMethod.POST)
+    public BaseCallBack createUser(String number, String password, String name, Integer sex) {
         // 检查 用户名、密码、昵称、性别 是否符合规范
         if (MyUtils.isEmpty(number) || number.length() > 32 || number.length() < 2) {
             return failCallBack(StatusCode.USER_NAME_10001, StatusCode.USER_NAME_10001_TEXT);
@@ -75,7 +86,7 @@ public class UserController extends ApiBaseController {
     /**
      * 更新数据库字段，只要某个字段传了值，就更新数据库
      */
-    @RequestMapping(path = "/updateUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     public BaseCallBack updateUser(Long user_id, String name, String icon, String signature, Integer sex, String birth, String phone, String email, String province, String city) {
         BaseCallBack callBack;
         User user = userRepository.findById(user_id).get();

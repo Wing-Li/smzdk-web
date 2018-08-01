@@ -39,7 +39,7 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice {
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         // dev 环境不加密
-        if (!"dev".equals(active)) {
+//        if (!"dev".equals(active)) {
             // 对所有的 api 数据都加密
             ObjectMapper objectMapper = new ObjectMapper();
             try {
@@ -48,7 +48,7 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+//        }
         return body;
     }
 }
