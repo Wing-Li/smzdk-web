@@ -18,7 +18,6 @@ import java.util.Date;
  * 会员充值记录
  */
 @Controller
-@EnableAutoConfiguration
 public class VipRechargeController extends ApiBaseController {
 
     private final VipRechargeRepository vipRechargeRepository;
@@ -60,8 +59,7 @@ public class VipRechargeController extends ApiBaseController {
         }
 
         int time = duration * 30;
-        Date timestamp = new Date(System.currentTimeMillis());
-        VipRecharge vipRecharge = new VipRecharge(user_id, money, vip_grade, time, from, timestamp);
+        VipRecharge vipRecharge = new VipRecharge(user_id, money, vip_grade, time, from);
         VipRecharge save = vipRechargeRepository.save(vipRecharge);
 
         return successCallBack(save);

@@ -1,5 +1,9 @@
 package com.lyl.smzdk.model;
 
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -9,6 +13,7 @@ import java.util.Date;
  * 表说明文档：https://docs.qq.com/sheet/BqI21X2yZIht1AtA8J1uFmNo1tq5ki0Hzm6i0w8oDA1vW3zb0IQmKC2Cjyb92hJmjH2k08Mj0gv2rG3tvCFu0
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,8 +39,10 @@ public class User implements Serializable {
     private String city = "";
     private Integer vip_grade = 0;
     private Long integral = 0L;
-    private Date create_time = new Date(System.currentTimeMillis());
-    private Date update_time = new Date(System.currentTimeMillis());
+    @CreatedDate
+    private Date create_time;
+    @UpdateTimestamp
+    private Date update_time;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

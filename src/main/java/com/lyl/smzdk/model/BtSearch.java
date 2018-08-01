@@ -1,9 +1,13 @@
 package com.lyl.smzdk.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class BtSearch {
 
     @Id
@@ -13,7 +17,8 @@ public class BtSearch {
     @Column(unique = true)
     private Long user_id;
     private String content;
-    private Date create_time = new Date(System.currentTimeMillis());
+    @CreatedDate
+    private Date create_time;
 
     public Long getId() {
         return id;

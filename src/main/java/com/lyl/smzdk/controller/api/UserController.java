@@ -17,7 +17,6 @@ import java.util.Optional;
 /**
  * 管理用户的逻辑
  */
-@EnableAutoConfiguration
 @RestController
 public class UserController extends ApiBaseController {
 
@@ -71,9 +70,6 @@ public class UserController extends ApiBaseController {
             user.setPassword(password);
             user.setName(name);
             user.setSex(sex);
-            Date timestamp = new Date(System.currentTimeMillis());
-            user.setCreate_time(timestamp);
-            user.setUpdate_time(timestamp);
 
             User save = userRepository.save(user);
 
@@ -86,9 +82,8 @@ public class UserController extends ApiBaseController {
     /**
      * 更新数据库字段，只要某个字段传了值，就更新数据库
      */
-    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+    @RequestMapping( value = "/updateUser", method = RequestMethod.POST)
     public BaseCallBack updateUser(Long user_id, String name, String icon, String signature, Integer sex, String birth, String phone, String email, String province, String city) {
-        BaseCallBack callBack;
         User user = userRepository.findById(user_id).get();
 
         if (!MyUtils.isEmpty(name)) {
@@ -124,9 +119,6 @@ public class UserController extends ApiBaseController {
             user.setCity(city);
         }
 
-        Date timestamp = new Date(System.currentTimeMillis());
-        user.setUpdate_time(timestamp);
-
         userRepository.save(user);
 
         return successCallBack(user);
@@ -139,7 +131,7 @@ public class UserController extends ApiBaseController {
      * @param password  密码
      * @return 用户信息
      */
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public BaseCallBack login(String user_name, String password) {
         if (!MyUtils.isEmpty(user_name) && !MyUtils.isEmpty(password)) {
             User user = userRepository.findByNumberOrPhone(user_name, user_name);
@@ -147,12 +139,11 @@ public class UserController extends ApiBaseController {
                 if (password.equals(user.getPassword())) {
                     return successCallBack(user);
                 } else {
-                    failCallBack(StatusCode.USER_NAME_11002, StatusCode.USER_NAME_11002_TEXT);
+                    return failCallBack(StatusCode.USER_NAME_11002, StatusCode.USER_NAME_11002_TEXT);
                 }
             } else {
                 return failCallBack(StatusCode.USER_NAME_11001, StatusCode.USER_NAME_11001_TEXT);
             }
-
         }
         return failCallBack(StatusCode.USER_NAME_11003, StatusCode.USER_NAME_11003_TEXT);
     }
@@ -161,16 +152,21 @@ public class UserController extends ApiBaseController {
      * 获取所有用户
      */
     @PostMapping("/getAllUser")
-    public List<User> getAllUser() {
-        return userRepository.findAll();
+    public BaseCallBack getAllUser() {
+        return successCallBack(userRepository.findAll());
     }
 
     /**
      * 获取用户信息
      */
     @PostMapping("/getUser")
-    public User getUser(Long user_id) {
-        return userRepository.findById(user_id).get();
+    public BaseCallBack getUser(Long user_id) {
+        Optional<User> user = userRepository.findById(user_id);
+        if (user.isPresent()){
+            return successCallBack(user.get());
+        } else {
+            return failCallBack(StatusCode.USER_NAME_11001, StatusCode.USER_NAME_11001_TEXT);
+        }
     }
 
     /**
@@ -179,7 +175,6 @@ public class UserController extends ApiBaseController {
     public void addUserIntegral(long user_id, int integral) {
         User user = userRepository.findById(user_id).get();
         user.setIntegral(user.getIntegral() + integral);
-        user.setUpdate_time(new Date(System.currentTimeMillis()));
         userRepository.save(user);
     }
 
@@ -189,7 +184,6 @@ public class UserController extends ApiBaseController {
     public void addUserVip(long user_id, int vip_grade) {
         User user = userRepository.findById(user_id).get();
         user.setVip_grade(vip_grade);
-        user.setUpdate_time(new Date(System.currentTimeMillis()));
         userRepository.save(user);
     }
 

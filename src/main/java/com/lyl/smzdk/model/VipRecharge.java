@@ -1,5 +1,8 @@
 package com.lyl.smzdk.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -7,6 +10,7 @@ import java.util.Date;
  * 会员充值记录表
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class VipRecharge {
 
     @Id
@@ -20,7 +24,8 @@ public class VipRecharge {
     private Integer vip_grade = 1;
     private Integer duration = 1;
     private Integer from_recharge = 0;
-    private Date create_time = new Date(System.currentTimeMillis());
+    @CreatedDate
+    private Date create_time;
 
     public Long getId() {
         return id;
@@ -29,13 +34,12 @@ public class VipRecharge {
     public VipRecharge(){
     }
 
-    public VipRecharge(Long user_id, Double money, int vip_grade, int duration, int from, Date create_time) {
+    public VipRecharge(Long user_id, Double money, int vip_grade, int duration, int from) {
         this.user_id = user_id;
         this.money = money;
         this.vip_grade = vip_grade;
         this.duration = duration;
         this.from_recharge = from;
-        this.create_time = create_time;
     }
 
     public void setVip_grade(Integer vip_grade) {
