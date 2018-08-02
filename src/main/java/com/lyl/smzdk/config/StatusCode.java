@@ -39,4 +39,7 @@ public class StatusCode {
     public final static int USER_NAME_15002 = 15002;
     public final static String USER_NAME_15002_TEXT = "金额不能小于0元";
 
+    // 搜索记录 16
+    public final static int USER_NAME_16001 = 16001;
+    public final static String USER_NAME_16001_TEXT = "搜索的内容为空";
 }

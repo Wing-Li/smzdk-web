@@ -7,8 +7,6 @@ import com.lyl.smzdk.model.VipRecharge;
 import com.lyl.smzdk.repository.UserRepository;
 import com.lyl.smzdk.repository.VipRechargeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,16 +30,16 @@ public class VipRechargeController extends ApiBaseController {
     /**
      * 会员充值
      *
-     * @param user_id   会员id
+     * @param userId   会员id
      * @param money     出的钱数
-     * @param vip_grade vip等级
+     * @param vipGrade vip等级
      * @param duration  充值时长
      * @param from      充值来源
      * @return
      */
     @PostMapping("/addVipRecharge")
-    public BaseCallBack addVipRecharge(Long user_id, Double money, Integer vip_grade, Integer duration, Integer from) {
-        Optional<User> user = userRepository.findById(user_id);
+    public BaseCallBack addVipRecharge(Long userId, Double money, Integer vipGrade, Integer duration, Integer from) {
+        Optional<User> user = userRepository.findById(userId);
         if (!user.isPresent()) {
             // 用户不存在
             return failCallBack(StatusCode.USER_NAME_15001, StatusCode.USER_NAME_15001_TEXT);
@@ -57,12 +55,15 @@ public class VipRechargeController extends ApiBaseController {
             money = 0D;
         }
 
+        // 一个月默认 30 天，这里计算到天数，再存到数据库
         int time = duration * 30;
-        VipRecharge vipRecharge = new VipRecharge(user_id, money, vip_grade, time, from);
+        VipRecharge vipRecharge = new VipRecharge(userId, money, vipGrade, time, from);
+        // 将数据保存到数据库
         VipRecharge save = vipRechargeRepository.save(vipRecharge);
 
+        // 给用户设置会员
         User userTable = user.get();
-        userTable.setVip_grade(vip_grade);
+        userTable.setVipGrade(vipGrade);
         userRepository.save(userTable);
 
         return successCallBack(save);

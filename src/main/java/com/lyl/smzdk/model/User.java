@@ -37,13 +37,13 @@ public class User implements Serializable {
     private String email = "";
     private String province = "";
     private String city = "";
-    private Integer vip_grade = 0;
+    private Integer vipGrade = 0;
     private Long integral = 0L;
-    private Integer close_days = 0;
+    private Integer closeDays = 0;
     @CreatedDate
-    private Date create_time;
+    private Date createTime;
     @UpdateTimestamp
-    private Date update_time;
+    private Date updateTime;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -52,12 +52,12 @@ public class User implements Serializable {
     public User() {
     }
 
-    public Integer getClose_days() {
-        return close_days;
+    public Integer getCloseDays() {
+        return closeDays;
     }
 
-    public void setClose_days(Integer close_days) {
-        this.close_days = close_days;
+    public void setCloseDays(Integer closeDays) {
+        this.closeDays = closeDays;
     }
 
     public Long getId() {
@@ -156,12 +156,12 @@ public class User implements Serializable {
         this.city = city;
     }
 
-    public Integer getVip_grade() {
-        return vip_grade;
+    public Integer getVipGrade() {
+        return vipGrade;
     }
 
-    public void setVip_grade(Integer vip_grade) {
-        this.vip_grade = vip_grade;
+    public void setVipGrade(Integer vipGrade) {
+        this.vipGrade = vipGrade;
     }
 
     public Long getIntegral() {
@@ -172,19 +172,19 @@ public class User implements Serializable {
         this.integral = integral;
     }
 
-    public Date getCreate_time() {
-        return create_time;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public Date getUpdate_time() {
-        return update_time;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdate_time(Date update_time) {
-        this.update_time = update_time;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

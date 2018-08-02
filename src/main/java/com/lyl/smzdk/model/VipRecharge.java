@@ -17,15 +17,15 @@ public class VipRecharge {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false)
     private Long user_id;
     @Column(nullable = false)
     private Double money;
-    private Integer vip_grade = 1;
+    private Integer vipGrade = 1;
     private Integer duration = 1;
-    private Integer from_recharge = 0;
+    private Integer fromRecharge = 0;
     @CreatedDate
-    private Date create_time;
+    private Date createTime;
 
     public Long getId() {
         return id;
@@ -34,24 +34,24 @@ public class VipRecharge {
     public VipRecharge(){
     }
 
-    public VipRecharge(Long user_id, Double money, int vip_grade, int duration, int from) {
+    public VipRecharge(Long user_id, Double money, int vipGrade, int duration, int from) {
         this.user_id = user_id;
         this.money = money;
-        this.vip_grade = vip_grade;
+        this.vipGrade = vipGrade;
         this.duration = duration;
-        this.from_recharge = from;
+        this.fromRecharge = from;
     }
 
-    public void setVip_grade(Integer vip_grade) {
-        this.vip_grade = vip_grade;
+    public void setVipGrade(Integer vipGrade) {
+        this.vipGrade = vipGrade;
     }
 
     public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
-    public void setFrom_recharge(Integer from_recharge) {
-        this.from_recharge = from_recharge;
+    public void setFromRecharge(Integer fromRecharge) {
+        this.fromRecharge = fromRecharge;
     }
 
     public void setId(Long id) {
@@ -74,12 +74,12 @@ public class VipRecharge {
         this.money = money;
     }
 
-    public int getVip_grade() {
-        return vip_grade;
+    public int getVipGrade() {
+        return vipGrade;
     }
 
     public void setVip_grade(int vip_grade) {
-        this.vip_grade = vip_grade;
+        this.vipGrade = vip_grade;
     }
 
     public int getDuration() {
@@ -90,19 +90,19 @@ public class VipRecharge {
         this.duration = duration;
     }
 
-    public int getFrom_recharge() {
-        return from_recharge;
+    public int getFromRecharge() {
+        return fromRecharge;
     }
 
     public void setFrom(int from) {
-        this.from_recharge = from;
+        this.fromRecharge = from;
     }
 
-    public Date getCreate_time() {
-        return create_time;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

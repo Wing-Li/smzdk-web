@@ -6,11 +6,8 @@ import com.lyl.smzdk.model.User;
 import com.lyl.smzdk.repository.UserRepository;
 import com.lyl.smzdk.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -83,8 +80,8 @@ public class UserController extends ApiBaseController {
      * 更新数据库字段，只要某个字段传了值，就更新数据库
      */
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-    public BaseCallBack updateUser(Long user_id, String name, String icon, String signature, Integer sex, String birth, String phone, String email, String province, String city) {
-        User user = userRepository.findById(user_id).get();
+    public BaseCallBack updateUser(Long userId, String name, String icon, String signature, Integer sex, String birth, String phone, String email, String province, String city) {
+        User user = userRepository.findById(userId).get();
 
         if (!MyUtils.isEmpty(name)) {
             int byName = userRepository.countByName(name);
@@ -127,18 +124,18 @@ public class UserController extends ApiBaseController {
     /**
      * 登录
      *
-     * @param user_name 用户号 或  手机号
+     * @param userName 用户号 或  手机号
      * @param password  密码
      * @return 用户信息
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public BaseCallBack login(String user_name, String password) {
-        if (!MyUtils.isEmpty(user_name) && !MyUtils.isEmpty(password)) {
-            User user = userRepository.findByNumberOrPhone(user_name, user_name);
+    public BaseCallBack login(String userName, String password) {
+        if (!MyUtils.isEmpty(userName) && !MyUtils.isEmpty(password)) {
+            User user = userRepository.findByNumberOrPhone(userName, userName);
             if (user != null) {
-                if (user.getClose_days() > 0) {
+                if (user.getCloseDays() > 0) {
                     // 账号被封
-                    return failCallBack(StatusCode.USER_NAME_13001, StatusCode.USER_NAME_13001_TEXT + user.getClose_days());
+                    return failCallBack(StatusCode.USER_NAME_13001, StatusCode.USER_NAME_13001_TEXT + user.getCloseDays());
                 } else if (password.equals(user.getPassword())) {
                     // 登录成功
                     return successCallBack(user);
@@ -165,13 +162,13 @@ public class UserController extends ApiBaseController {
      * 获取用户信息
      */
     @PostMapping("/getUser")
-    public BaseCallBack getUser(Long user_id) {
-        Optional<User> user = userRepository.findById(user_id);
+    public BaseCallBack getUser(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             User userTable = user.get();
-            if (userTable.getClose_days() > 0) {
+            if (userTable.getCloseDays() > 0) {
                 // 账号被封
-                return failCallBack(StatusCode.USER_NAME_13001, StatusCode.USER_NAME_13001_TEXT + userTable.getClose_days());
+                return failCallBack(StatusCode.USER_NAME_13001, StatusCode.USER_NAME_13001_TEXT + userTable.getCloseDays());
             } else {
                 // 获取成功
                 return successCallBack(user.get());
