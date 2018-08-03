@@ -6,10 +6,12 @@ public class StatusCode {
     public final static String USER_NAME_10000_TEXT = "网络异常，请稍后再试";
 
     // 比较公用的
-    public final static int BASE_TITLE_EMPYT= 20000;
+    public final static int BASE_TITLE_EMPYT = 20000;
     public final static String BASE_TITLE_EMPYT_TEXT = "标题不能为空";
-    public final static int BASE_CONTENT_EMPYT= 20001;
+    public final static int BASE_CONTENT_EMPYT = 20001;
     public final static String BASE_CONTENT_EMPYT_TEXT = "内容不能为空";
+    public final static int BASE_REQUEST_EMPYT = 20003;
+    public final static String BASE_REQUEST_EMPYT_TEXT = "请求的内容不存在";
 
     // 创建用户
     public final static int USER_NAME_10001 = 10001;
