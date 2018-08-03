@@ -62,10 +62,9 @@ public class VipRechargeController extends ApiBaseController {
 
         // 给用户设置会员
         User userTable = user.get();
-        // 设置等级
         userTable.setVipGrade(vipGrade);
-        // 设置用户的到期时间
 
+        // 设置用户的到期时间
         // 先获取以前时间，查看他是否过期，没过期继续加。过期了，或者没有，从新设置
         Date vipLimitDate = userTable.getVipLimitDate();
         Date nowTime = new Date();
@@ -76,7 +75,7 @@ public class VipRechargeController extends ApiBaseController {
             userTable.setVipLimitDate(vipLimitDate);
         } else {
             // 以前没有冲过会员 或者 过期了，时间从现在开始算
-            nowTime.setMonth(nowTime.getMonth() + 1);
+            nowTime.setMonth(nowTime.getMonth() + duration);
             userTable.setVipLimitDate(nowTime);
         }
         User resultUser = userRepository.save(userTable);
