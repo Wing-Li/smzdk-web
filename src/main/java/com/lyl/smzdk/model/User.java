@@ -38,6 +38,7 @@ public class User implements Serializable {
     private String province = "";
     private String city = "";
     private Integer vipGrade = 0;
+    private Date vipLimitDate = new Date(0);// 会员过期时间
     private Long integral = 0L;
     private Integer closeDays = 0;
     @CreatedDate
@@ -50,6 +51,14 @@ public class User implements Serializable {
     }
 
     public User() {
+    }
+
+    public Date getVipLimitDate() {
+        return vipLimitDate;
+    }
+
+    public void setVipLimitDate(Date vipLimitDate) {
+        this.vipLimitDate = vipLimitDate;
     }
 
     public Integer getCloseDays() {

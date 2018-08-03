@@ -177,14 +177,5 @@ public class UserController extends ApiBaseController {
             return failCallBack(StatusCode.USER_NAME_11001, StatusCode.USER_NAME_11001_TEXT);
         }
     }
-
-    /**
-     * 给用户添加积分
-     */
-    public void addUserIntegral(long user_id, int integral) {
-        User user = userRepository.findById(user_id).get();
-        user.setIntegral(user.getIntegral() + integral);
-        userRepository.save(user);
-    }
 }
 

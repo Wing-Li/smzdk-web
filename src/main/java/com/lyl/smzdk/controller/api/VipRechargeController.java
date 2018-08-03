@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -31,10 +32,10 @@ public class VipRechargeController extends ApiBaseController {
      * 会员充值
      *
      * @param userId   会员id
-     * @param money     出的钱数
+     * @param money    出的钱数
      * @param vipGrade vip等级
-     * @param duration  充值时长
-     * @param from      充值来源
+     * @param duration 充值时长（月）
+     * @param from     充值来源
      * @return
      */
     @PostMapping("/addVipRecharge")
@@ -55,17 +56,31 @@ public class VipRechargeController extends ApiBaseController {
             money = 0D;
         }
 
-        // 一个月默认 30 天，这里计算到天数，再存到数据库
-        int time = duration * 30;
-        VipRecharge vipRecharge = new VipRecharge(userId, money, vipGrade, time, from);
+        VipRecharge vipRecharge = new VipRecharge(userId, money, vipGrade, duration, from);
         // 将数据保存到数据库
         VipRecharge save = vipRechargeRepository.save(vipRecharge);
 
         // 给用户设置会员
         User userTable = user.get();
+        // 设置等级
         userTable.setVipGrade(vipGrade);
-        userRepository.save(userTable);
+        // 设置用户的到期时间
 
-        return successCallBack(save);
+        // 先获取以前时间，查看他是否过期，没过期继续加。过期了，或者没有，从新设置
+        Date vipLimitDate = userTable.getVipLimitDate();
+        Date nowTime = new Date();
+
+        if (vipLimitDate != null && vipLimitDate.getTime() > nowTime.getTime()) {
+            // 以前冲过会员，并且还有没有过期，在他的时间往后加
+            vipLimitDate.setMonth(vipLimitDate.getMonth() + duration);
+            userTable.setVipLimitDate(vipLimitDate);
+        } else {
+            // 以前没有冲过会员 或者 过期了，时间从现在开始算
+            nowTime.setMonth(nowTime.getMonth() + 1);
+            userTable.setVipLimitDate(nowTime);
+        }
+        User resultUser = userRepository.save(userTable);
+
+        return successCallBack(resultUser);
     }
 }
