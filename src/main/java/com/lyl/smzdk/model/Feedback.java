@@ -1,5 +1,6 @@
 package com.lyl.smzdk.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -22,6 +23,7 @@ public class Feedback {
     private String content;
     private String userName;
     private String adminReply;
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private Date createTime;
 

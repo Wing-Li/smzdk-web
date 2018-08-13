@@ -1,5 +1,6 @@
 package com.lyl.smzdk.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,6 +18,7 @@ public class BtSearch {
     private Long userId;
     private String uuid;
     private String content;
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private Date createTime;
 

@@ -1,5 +1,6 @@
 package com.lyl.smzdk.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -41,8 +42,10 @@ public class User implements Serializable {
     private Date vipLimitDate = new Date(0);// 会员过期时间
     private Long integral = 0L;
     private Integer closeDays = 0;
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private Date createTime;
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @UpdateTimestamp
     private Date updateTime;
 

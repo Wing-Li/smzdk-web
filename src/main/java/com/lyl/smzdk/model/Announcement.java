@@ -1,5 +1,6 @@
 package com.lyl.smzdk.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -22,6 +23,7 @@ public class Announcement {
     @Column(columnDefinition = "TEXT")
     private String content;
     private String authorName = "管理员";
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private Date createTime;
 
