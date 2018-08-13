@@ -44,6 +44,7 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
                 String result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
+                logger.info("被加密的返回数据：" + result);
                 return DESHelper.encrypt(result);
             } catch (Exception e) {
                 e.printStackTrace();
