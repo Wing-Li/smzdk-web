@@ -24,7 +24,7 @@ public class ApiBaseController {
      * @return
      */
     BaseCallBack<Object> failCallBack(int code, String msg) {
-        return new BaseCallBack<>(code, msg, "");
+        return new BaseCallBack<>(code, msg, null);
     }
 
 
