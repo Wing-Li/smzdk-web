@@ -3,7 +3,9 @@ package com.lyl.smzdk.controller.api;
 import com.lyl.smzdk.config.StatusCode;
 import com.lyl.smzdk.model.BaseCallBack;
 import com.lyl.smzdk.model.BtSearch;
+import com.lyl.smzdk.model.User;
 import com.lyl.smzdk.repository.BtSearchRepository;
+import com.lyl.smzdk.repository.UserRepository;
 import com.lyl.smzdk.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +18,12 @@ import java.util.Date;
 public class BtSearchController extends ApiBaseController {
 
     private final BtSearchRepository btSearchRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public BtSearchController(BtSearchRepository btSearchRepository) {
+    public BtSearchController(BtSearchRepository btSearchRepository, UserRepository userRepository) {
         this.btSearchRepository = btSearchRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -44,20 +48,22 @@ public class BtSearchController extends ApiBaseController {
                 0, 0, 0); // 时分秒
         Date time = instance.getTime();
 
-        // 查询使用 userId 或者 uuid ，今天的查询次数
-        int countSreach = 0;
-        if (userId == null || userId == 0) {
-            // 没有账号的人
-            countSreach = btSearchRepository.countByUuidAndCreateTimeAfter(uuid, time);
-        } else {
+        // 查询使用 uuid ，今天的查询次数
+        int countSerach = btSearchRepository.countByUuidAndCreateTimeAfter(uuid, time);
+
+        if (userId != null && userId != 0) {
             // 有账号的
-            countSreach = btSearchRepository.countByUserIdAndCreateTimeAfter(userId, time);
+            User user = userRepository.findById(userId).get();
+            if (user.getVipGrade() > 1){
+                // 无限次
+                countSerach = -1;
+            }
         }
 
         // 将搜索记录保存进数据库
         BtSearch btSearch = new BtSearch(userId, uuid, content);
         btSearchRepository.save(btSearch);
 
-        return successCallBack(countSreach);
+        return successCallBack(countSerach);
     }
 }
