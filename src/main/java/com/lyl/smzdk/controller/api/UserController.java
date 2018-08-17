@@ -83,7 +83,7 @@ public class UserController extends ApiBaseController {
     public BaseCallBack updateUser(Long userId, String name, String icon, String signature, Integer sex, String birth, String phone, String email, String province, String city) {
         User user = userRepository.findById(userId).get();
 
-        if (!MyUtils.isEmpty(name)) {
+        if (!MyUtils.isEmpty(name) && !name.equals(user.getName())) {
             int byName = userRepository.countByName(name);
             if (byName > 0) {
                 return failCallBack(StatusCode.USER_NAME_10005, StatusCode.USER_NAME_10005_TEXT);
@@ -91,28 +91,28 @@ public class UserController extends ApiBaseController {
                 user.setName(name);
             }
         }
-        if (!MyUtils.isEmpty(icon)) {
+        if (!MyUtils.isEmpty(icon) && !icon.equals(user.getIcon())) {
             user.setIcon(icon);
         }
-        if (!MyUtils.isEmpty(signature)) {
+        if (!MyUtils.isEmpty(signature) && !signature.equals(user.getSignature())) {
             user.setSignature(signature);
         }
-        if (sex != null) {
+        if (sex != null && sex.intValue() != user.getSex().intValue()) {
             user.setSex(sex);
         }
-        if (!MyUtils.isEmpty(birth)) {
+        if (!MyUtils.isEmpty(birth) && !birth.equals(user.getBirth())) {
             user.setBirth(birth);
         }
-        if (!MyUtils.isEmpty(phone)) {
+        if (!MyUtils.isEmpty(phone) && !phone.equals(user.getPhone())) {
             user.setPhone(phone);
         }
-        if (!MyUtils.isEmpty(email)) {
+        if (!MyUtils.isEmpty(email) && !email.equals(user.getEmail())) {
             user.setEmail(email);
         }
-        if (!MyUtils.isEmpty(province)) {
+        if (!MyUtils.isEmpty(province) && !province.equals(user.getProvince())) {
             user.setProvince(province);
         }
-        if (!MyUtils.isEmpty(city)) {
+        if (!MyUtils.isEmpty(city) && !city.equals(user.getCity())) {
             user.setCity(city);
         }
 
@@ -125,7 +125,7 @@ public class UserController extends ApiBaseController {
      * 登录
      *
      * @param userName 用户号 或  手机号
-     * @param password  密码
+     * @param password 密码
      * @return 用户信息
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
