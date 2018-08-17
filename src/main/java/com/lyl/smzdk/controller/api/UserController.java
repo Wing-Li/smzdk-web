@@ -8,6 +8,7 @@ import com.lyl.smzdk.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -171,7 +172,19 @@ public class UserController extends ApiBaseController {
                 return failCallBack(StatusCode.USER_NAME_13001, StatusCode.USER_NAME_13001_TEXT + userTable.getCloseDays());
             } else {
                 // 获取成功
-                return successCallBack(user.get());
+
+                // 如果当前是会员，检查会员是否过期
+                if (userTable.getVipGrade() >= 2){
+                    long vipLimitDate = userTable.getVipLimitDate().getTime();
+                    long nowTime = new Date().getTime();
+                    // 过期时间 小于 当前时间，将会员等级设计会普通
+                    if (vipLimitDate < nowTime){
+                        userTable.setVipGrade(1);
+                        userTable = userRepository.save(userTable);
+                    }
+                }
+
+                return successCallBack(userTable);
             }
         } else {
             return failCallBack(StatusCode.USER_NAME_11001, StatusCode.USER_NAME_11001_TEXT);
