@@ -1,6 +1,8 @@
 package com.lyl.smzdk.controller.api;
 
 import com.lyl.smzdk.model.BaseCallBack;
+import com.lyl.smzdk.model.User;
+import com.lyl.smzdk.utils.MyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -28,4 +30,15 @@ public class ApiBaseController {
     }
 
 
+    /**
+     * 将用户信息返回给 客户端时，需要处理的一些逻辑
+     */
+    protected User userAdapter(User user) {
+        if (!MyUtils.isEmpty(user.getIcon())) {
+            // 设置头像
+            user.setIcon(UserController.ICON_HOST + user.getIcon());
+        }
+
+        return user;
+    }
 }

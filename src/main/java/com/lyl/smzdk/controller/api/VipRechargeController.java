@@ -80,6 +80,6 @@ public class VipRechargeController extends ApiBaseController {
         }
         User resultUser = userRepository.save(userTable);
 
-        return successCallBack(resultUser);
+        return successCallBack(userAdapter(resultUser));
     }
 }

@@ -18,6 +18,8 @@ import java.util.Optional;
 @RestController
 public class UserController extends ApiBaseController {
 
+    public static final String ICON_HOST = "http://pcucrcqlr.bkt.clouddn.com/";
+
     private final UserRepository userRepository;
 
     @Autowired
@@ -71,7 +73,7 @@ public class UserController extends ApiBaseController {
 
             User save = userRepository.save(user);
 
-            return successCallBack(save);
+            return successCallBack(userAdapter(save));
         } catch (Exception e) {
             return failCallBack(StatusCode.USER_NAME_10000, StatusCode.USER_NAME_10000_TEXT);
         }
@@ -119,7 +121,7 @@ public class UserController extends ApiBaseController {
 
         userRepository.save(user);
 
-        return successCallBack(user);
+        return successCallBack(userAdapter(user));
     }
 
     /**
@@ -139,7 +141,7 @@ public class UserController extends ApiBaseController {
                     return failCallBack(StatusCode.USER_NAME_13001, StatusCode.USER_NAME_13001_TEXT + user.getCloseDays());
                 } else if (password.equals(user.getPassword())) {
                     // 登录成功
-                    return successCallBack(user);
+                    return successCallBack(userAdapter(user));
                 } else {
                     // 密码不对
                     return failCallBack(StatusCode.USER_NAME_11002, StatusCode.USER_NAME_11002_TEXT);
@@ -174,21 +176,18 @@ public class UserController extends ApiBaseController {
                 // 获取成功
 
                 // 如果当前是会员，检查会员是否过期
-                if (userTable.getVipGrade() >= 2){
+                if (userTable.getVipGrade() >= 2) {
                     long vipLimitDate = userTable.getVipLimitDate().getTime();
                     long nowTime = new Date().getTime();
                     // 过期时间 小于 当前时间，将会员等级设计会普通
-                    if (vipLimitDate < nowTime){
+                    if (vipLimitDate < nowTime) {
                         userTable.setVipGrade(1);
                         userTable = userRepository.save(userTable);
                     }
                 }
 
-                // 设置头像
-                String iconHost = "http://pcucrcqlr.bkt.clouddn.com/";
-                userTable.setIcon(iconHost + userTable.getIcon());
 
-                return successCallBack(userTable);
+                return successCallBack(userAdapter(userTable));
             }
         } else {
             return failCallBack(StatusCode.USER_NAME_11001, StatusCode.USER_NAME_11001_TEXT);
