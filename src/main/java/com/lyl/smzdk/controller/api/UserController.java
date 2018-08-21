@@ -184,6 +184,10 @@ public class UserController extends ApiBaseController {
                     }
                 }
 
+                // 设置头像
+                String iconHost = "http://pcucrcqlr.bkt.clouddn.com/";
+                userTable.setIcon(iconHost + userTable.getIcon());
+
                 return successCallBack(userTable);
             }
         } else {
