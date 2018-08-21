@@ -18,8 +18,6 @@ import java.util.Optional;
 @RestController
 public class UserController extends ApiBaseController {
 
-    public static final String ICON_HOST = "http://pcucrcqlr.bkt.clouddn.com/";
-
     private final UserRepository userRepository;
 
     @Autowired

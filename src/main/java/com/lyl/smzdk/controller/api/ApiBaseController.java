@@ -3,6 +3,7 @@ package com.lyl.smzdk.controller.api;
 import com.lyl.smzdk.model.BaseCallBack;
 import com.lyl.smzdk.model.User;
 import com.lyl.smzdk.utils.MyUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @RequestMapping("/api")
 public class ApiBaseController {
+
+    @Value("${imageHost}")
+    private String imageHost;
 
     /**
      * 请求数据成功
@@ -36,7 +40,7 @@ public class ApiBaseController {
     protected User userAdapter(User user) {
         if (!MyUtils.isEmpty(user.getIcon())) {
             // 设置头像
-            user.setIcon(UserController.ICON_HOST + user.getIcon());
+            user.setIcon(imageHost + user.getIcon());
         }
 
         return user;
