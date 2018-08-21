@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 七牛云 Token 获取
  */
 @RestController
-public class QiniuTokenController {
+public class QiniuTokenController extends ApiBaseController {
 
     @PostMapping("/token")
     public String token(String accessKey, String secretKey, String bucket) {
