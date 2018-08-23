@@ -69,8 +69,7 @@ public class VipRechargeController extends ApiBaseController {
         // 设置用户的到期时间
         // 先获取以前时间，查看他是否过期，没过期继续加。过期了，或者没有，从新设置
         Date vipLimitDate = userTable.getVipLimitDate();
-        Calendar nowCalendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
-        Date nowTime = nowCalendar.getTime();
+        Date nowTime = new Date();
 
         if (vipLimitDate != null && vipLimitDate.getTime() > nowTime.getTime()) {
             // 以前冲过会员，并且还有没有过期，在他的时间往后加
