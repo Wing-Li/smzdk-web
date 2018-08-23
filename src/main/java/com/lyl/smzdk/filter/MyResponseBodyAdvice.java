@@ -13,6 +13,9 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+
 /**
  * 对返回的数据进行加密
  * 参考：https://blog.csdn.net/huang812561/article/details/79424041
@@ -40,9 +43,12 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice {
     public Object beforeBodyWrite(Object body, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         // dev 环境不加密
         if (!"dev".equals(active)) {
-            // 对所有的 api 数据都加密
+
+            // if ("token".equals(methodParameter.getExecutable().getName()))
+
             ObjectMapper objectMapper = new ObjectMapper();
             try {
+                // 对所有的 api 数据都加密
                 String result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
                 logger.info("被加密的返回数据：" + result);
                 return DESHelper.encrypt(result);
