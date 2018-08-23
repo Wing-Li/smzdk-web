@@ -34,7 +34,7 @@ public class VipRechargeController extends ApiBaseController {
      * @param userId   会员id
      * @param money    出的钱数
      * @param vipGrade vip等级
-     * @param duration 充值时长（月）
+     * @param duration 充值时长（天）
      * @param from     充值来源
      * @return
      */
@@ -71,11 +71,11 @@ public class VipRechargeController extends ApiBaseController {
 
         if (vipLimitDate != null && vipLimitDate.getTime() > nowTime.getTime()) {
             // 以前冲过会员，并且还有没有过期，在他的时间往后加
-            vipLimitDate.setMonth(vipLimitDate.getMonth() + duration);
+            vipLimitDate.setDate(vipLimitDate.getDate() + duration);
             userTable.setVipLimitDate(vipLimitDate);
         } else {
             // 以前没有冲过会员 或者 过期了，时间从现在开始算
-            nowTime.setMonth(nowTime.getMonth() + duration);
+            nowTime.setDate(nowTime.getDate() + duration);
             userTable.setVipLimitDate(nowTime);
         }
         User resultUser = userRepository.save(userTable);
