@@ -21,7 +21,7 @@ InputStream inputStream = project.rootProject.file('src/main/resources/applicati
 properties.load( inputStream )
 
 group = 'com.lyl.smzdk'
-version = '0.0.1-' + properties.getProperty( 'spring.profiles.active' )
+version = '1.0.0-' + properties.getProperty( 'spring.profiles.active' )
 sourceCompatibility = 1.8
 
 repositories {
