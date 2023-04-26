@@ -28,6 +28,9 @@ public class BtSearch {
         this.content = content;
     }
 
+    public BtSearch() {
+    }
+
     public Long getId() {
         return id;
     }
